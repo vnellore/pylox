@@ -1,6 +1,6 @@
-import token
-import token_type
-import lox
+from pylox.token import Token
+from pylox.token_type import TokenType
+from pylox import lox
 
 class Scanner:
     def __init__(self, source):
@@ -9,22 +9,22 @@ class Scanner:
         self.start = 0
         self.current = 0
         self.line = 1
-        self.keywords = {"and":token_type.TokenType.AND,
-        "class":token_type.TokenType.CLASS,
-        "else":token_type.TokenType.ELSE,
-        "false":token_type.TokenType.FALSE,
-        "for":token_type.TokenType.FOR,
-        "fun":token_type.TokenType.FUN,
-        "if":token_type.TokenType.IF,
-        "nil":token_type.TokenType.NIL,
-        "or":token_type.TokenType.OR,
-        "print":token_type.TokenType.PRINT,
-        "return":token_type.TokenType.RETURN,
-        "super":token_type.TokenType.SUPER,
-        "this":token_type.TokenType.THIS,
-        "true":token_type.TokenType.TRUE,
-        "var":token_type.TokenType.VAR,
-        "while":token_type.TokenType.WHILE
+        self.keywords = {"and":TokenType.AND,
+        "class":TokenType.CLASS,
+        "else":TokenType.ELSE,
+        "false":TokenType.FALSE,
+        "for":TokenType.FOR,
+        "fun":TokenType.FUN,
+        "if":TokenType.IF,
+        "nil":TokenType.NIL,
+        "or":TokenType.OR,
+        "print":TokenType.PRINT,
+        "return":TokenType.RETURN,
+        "super":TokenType.SUPER,
+        "this":TokenType.THIS,
+        "true":TokenType.TRUE,
+        "var":TokenType.VAR,
+        "while":TokenType.WHILE
         }
 
     def scanTokens(self):
@@ -35,7 +35,7 @@ class Scanner:
             self.start = self.current
             self.scanToken()
 
-        self.tokens.append(token.Token(token_type.TokenType.EOF, "", None, self.line))
+        self.tokens.append(Token(TokenType.EOF, "", None, self.line))
 
         return self.tokens    
     
@@ -46,39 +46,39 @@ class Scanner:
         c = self.advance()
 
         if (c == '('):
-            self.addToken(token_type.TokenType.LEFT_PAREN)
+            self.addToken(TokenType.LEFT_PAREN)
         elif (c == ')'):
-            self.addToken(token_type.TokenType.RIGHT_PAREN)
+            self.addToken(TokenType.RIGHT_PAREN)
         elif (c == '{'):
-            self.addToken(token_type.TokenType.LEFT_BRACE)
+            self.addToken(TokenType.LEFT_BRACE)
         elif (c == '}'):
-            self.addToken(token_type.TokenType.RIGHT_BRACE)
+            self.addToken(TokenType.RIGHT_BRACE)
         elif (c == ','):
-            self.addToken(token_type.TokenType.COMMA)
+            self.addToken(TokenType.COMMA)
         elif (c == '.'):
-            self.addToken(token_type.TokenType.DOT)
+            self.addToken(TokenType.DOT)
         elif (c == '-'):
-            self.addToken(token_type.TokenType.MINUS)
+            self.addToken(TokenType.MINUS)
         elif (c == '+'):
-            self.addToken(token_type.TokenType.PLUS)
+            self.addToken(TokenType.PLUS)
         elif (c == ';'):
-            self.addToken(token_type.TokenType.SEMICOLON)
+            self.addToken(TokenType.SEMICOLON)
         elif (c == '*'):
-            self.addToken(token_type.TokenType.STAR)
+            self.addToken(TokenType.STAR)
         elif (c == '!'):
-            self.addToken(token_type.TokenType.BANG_EQUAL if self.match('=') else token_type.TokenType.BANG)
+            self.addToken(TokenType.BANG_EQUAL if self.match('=') else TokenType.BANG)
         elif (c == '='):
-            self.addToken(token_type.TokenType.EQUAL_EQUAL if self.match('=') else token_type.TokenType.EQUAL)
+            self.addToken(TokenType.EQUAL_EQUAL if self.match('=') else TokenType.EQUAL)
         elif (c == '<'):
-            self.addToken(token_type.TokenType.LESS_EQUAL if self.match('=') else token_type.TokenType.LESS)
+            self.addToken(TokenType.LESS_EQUAL if self.match('=') else TokenType.LESS)
         elif (c == '>'):
-            self.addToken(token_type.TokenType.GREATER_EQUAL if self.match('=') else token_type.TokenType.GREATER)
+            self.addToken(TokenType.GREATER_EQUAL if self.match('=') else TokenType.GREATER)
         elif (c == '/'):
             if (self.match('/')):
                 while (self.peek() != '\n' and self.isAtEnd() == False ):
                     self.advance()
             else:
-                self.addToken(token_type.TokenType.SLASH)
+                self.addToken(TokenType.SLASH)
         elif (c == ' '): 
             pass
         elif (c == '\r'):
@@ -109,7 +109,7 @@ class Scanner:
         if(type):
             self.addToken(type)
         else:    
-            type = token_type.TokenType.IDENTIFIER
+            type = TokenType.IDENTIFIER
 
 
     def isAlpha(self, c):
@@ -137,7 +137,7 @@ class Scanner:
 
         # trim the surrounding quotes
         value = self.source[self.start + 1 : self.current - 1]
-        self.addToken(token_type.TokenType.STRING, value)
+        self.addToken(TokenType.STRING, value)
 
 
     def number(self):
@@ -151,7 +151,7 @@ class Scanner:
             while(self.isDigit(self.peek())):
                 self.advance()
 
-        self.addToken(token_type.TokenType.NUMBER, float(self.source[self.start:self.current]))
+        self.addToken(TokenType.NUMBER, float(self.source[self.start:self.current]))
 
     def peek(self):
         """
@@ -207,4 +207,4 @@ class Scanner:
         Add token to list of tokens
         """
         text = self.source[self.start:self.current]
-        self.tokens.append(token.Token(token_type, text, literal, self.line))    
+        self.tokens.append(Token(token_type, text, literal, self.line))    

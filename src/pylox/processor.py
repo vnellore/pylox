@@ -1,6 +1,6 @@
 import sys
 from os import path
-import scanner
+from pylox.scanner import Scanner
 
 had_error = False
 
@@ -18,7 +18,7 @@ def run_file(filePath):
         print("Invalid file path specified!")
 
 def run(file_contents):
-    scannr = scanner.Scanner(file_contents)
+    scannr = Scanner(file_contents)
     tokens = scannr.scanTokens()
     print(tokens)
 
@@ -29,13 +29,10 @@ def report(line, where, message):
     print(f"[line {line} Error: {where} : {message}]")
     had_error = True
 
-def pylox():
+def process():
     if (len(sys.argv) > 2):
         print("Usage: pylox [script]")
     elif (len(sys.argv) == 2):
         run_file(sys.argv[1])
     else:
         run_prompt()
-
-if __name__ == "__main__":
-    pylox()

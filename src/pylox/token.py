@@ -9,4 +9,4 @@ class Token:
         return f'{self.__class__.__name__}({self.tokentype}, {self.lexeme}, {self.literal}, {self.line})'
 
     def __str__(self):
-        return f'{self.tokentype} {lexeme} {literal}'
+        return f'{self.tokentype} {self.lexeme} {self.literal}'
